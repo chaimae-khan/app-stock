@@ -225,55 +225,55 @@
 <ul>
 <li><a href="productlist">Product List</a></li>
 <li><a href="addproduct">Add Product</a></li>
-<li><a href="categorylist.">Category List</a></li>
-<li><a href="addcategory.">Add Category</a></li>
-<li><a href="subcategorylist.">Sub Category List</a></li>
-<li><a href="subaddcategory.">Add Sub Category</a></li>
-<li><a href="brandlist.">Brand List</a></li>
-<li><a href="addbrand.">Add Brand</a></li>
-<li><a href="importproduct.">Import Products</a></li>
-<li><a href="barcode.">Print Barcode</a></li>
+<li><a href="categorylist">Category List</a></li>
+<li><a href="addcategory">Add Category</a></li>
+<li><a href="subcategorylist">Sub Category List</a></li>
+<li><a href="subaddcategory">Add Sub Category</a></li>
+<li><a href="brandlist">Brand List</a></li>
+<li><a href="addbrand">Add Brand</a></li>
+<li><a href="importproduct">Import Products</a></li>
+<li><a href="barcode">Print Barcode</a></li>
 </ul>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/sales1.svg" alt="img"><span> Sales</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="saleslist.">Sales List</a></li>
-<li><a href="pos.">POS</a></li>
-<li><a href="pos.">New Sales</a></li>
-<li><a href="salesreturnlists.">Sales Return List</a></li>
-<li><a href="createsalesreturns.">New Sales Return</a></li>
+<li><a href="saleslist">Sales List</a></li>
+<li><a href="pos">POS</a></li>
+<li><a href="pos">New Sales</a></li>
+<li><a href="salesreturnlists">Sales Return List</a></li>
+<li><a href="createsalesreturns">New Sales Return</a></li>
 </ul>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/purchase1.svg" alt="img"><span> Purchase</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="purchaselist.">Purchase List</a></li>
-<li><a href="addpurchase.">Add Purchase</a></li>
-<li><a href="importpurchase.">Import Purchase</a></li>
+<li><a href="purchaselist">Purchase List</a></li>
+<li><a href="addpurchase">Add Purchase</a></li>
+<li><a href="importpurchase">Import Purchase</a></li>
 </ul>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/expense1.svg" alt="img"><span> Expense</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="expenselist.">Expense List</a></li>
-<li><a href="createexpense.">Add Expense</a></li>
-<li><a href="expensecategory.">Expense Category</a></li>
+<li><a href="expenselist">Expense List</a></li>
+<li><a href="createexpense">Add Expense</a></li>
+<li><a href="expensecategory">Expense Category</a></li>
 </ul>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/quotation1.svg" alt="img"><span> Quotation</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="quotationList.">Quotation List</a></li>
- <li><a href="addquotation.">Add Quotation</a></li>
+<li><a href="quotationList">Quotation List</a></li>
+ <li><a href="addquotation">Add Quotation</a></li>
 </ul>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/transfer1.svg" alt="img"><span> Transfer</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="transferlist.">Transfer List</a></li>
-<li><a href="addtransfer.">Add Transfer </a></li>
-<li><a href="importtransfer.">Import Transfer </a></li>
+<li><a href="transferlist">Transfer List</a></li>
+<li><a href="addtransfer">Add Transfer </a></li>
+<li><a href="importtransfer">Import Transfer </a></li>
 </ul>
 </li>
 <li class="submenu">
@@ -288,29 +288,29 @@
 <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/users1.svg" alt="img"><span> People</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="customerlist.">Customer List</a></li>
-<li><a href="addcustomer.">Add Customer </a></li>
-<li><a href="supplierlist.">Supplier List</a></li>
-<li><a href="addsupplier.">Add Supplier </a></li>
-<li><a href="userlist.">User List</a></li>
-<li><a href="adduser.">Add User</a></li>
-<li><a href="storelist.">Store List</a></li>
-<li><a href="addstore.">Add Store</a></li>
+<li><a href="customerlist">Customer List</a></li>
+<li><a href="addcustomer">Add Customer </a></li>
+<li><a href="supplierlist">Supplier List</a></li>
+<li><a href="addsupplier">Add Supplier </a></li>
+<li><a href="userlist">User List</a></li>
+<li><a href="adduser">Add User</a></li>
+<li><a href="storelist">Store List</a></li>
+<li><a href="addstore">Add Store</a></li>
 </ul>
 </li> <li class="submenu">
 <a href="javascript:void(0);"><img src="assets/img/icons/places.svg" alt="img"><span> Places</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="newcountry.">New Country</a></li>
-<li><a href="countrieslist.">Countries list</a></li>
-<li><a href="newstate.">New State </a></li>
-<li><a href="statelist.">State list</a></li>
+<li><a href="newcountry">New Country</a></li>
+<li><a href="countrieslist">Countries list</a></li>
+<li><a href="newstate">New State </a></li>
+<li><a href="statelist">State list</a></li>
 </ul>
 </li>
 <li>
-<a href="components."><i data-feather="layers"></i><span> Components</span> </a>
+<a href="components"><i data-feather="layers"></i><span> Components</span> </a>
 </li>
 <li>
-<a href="blankpage."><i data-feather="file"></i><span> Blank Page</span> </a>
+<a href="blankpage"><i data-feather="file"></i><span> Blank Page</span> </a>
 </li>
 <li class="submenu">
 <a href="javascript:void(0);"><i data-feather="alert-octagon"></i> <span> Error Pages </span> <span class="menu-arrow"></span></a>
@@ -322,11 +322,11 @@
 <li class="submenu">
 <a href="javascript:void(0);"><i data-feather="box"></i> <span>Elements </span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="sweetalerts.">Sweet Alerts</a></li>
-<li><a href="tooltip.">Tooltip</a></li>
-<li><a href="popover.">Popover</a></li>
-<li><a href="ribbon.">Ribbon</a></li>
-<li><a href="clipboard.">Clipboard</a></li>
+<li><a href="sweetalerts">Sweet Alerts</a></li>
+<li><a href="tooltip">Tooltip</a></li>
+<li><a href="popover">Popover</a></li>
+<li><a href="ribbon">Ribbon</a></li>
+<li><a href="clipboard">Clipboard</a></li>
 <li><a href="drag-drop.">Drag & Drop</a></li>
 <li><a href="rangeslider.">Range Slider</a></li>
 <li><a href="rating.">Rating</a></li>

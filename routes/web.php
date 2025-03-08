@@ -27,9 +27,12 @@ Route::resources([
 Route::get('/productlist', function () {
     return view('template.productlist');
 });
-Route::get('/signin', function () {
-    return view('template.signin');
+Route::get('/adduser', function () {
+    return view('Users.create');
 });
+// Route::get('/signin', function () {
+//     return view('template.signin');
+// });
 Route::get('/addproduct', function () {
     return view('template.addproduct');
 });
