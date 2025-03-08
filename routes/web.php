@@ -19,6 +19,9 @@ Route::resources([
     'users' => UserController::class,
     'products' => ProductController::class,
 ]);
+Route::get('/', function () {
+    return view('template.index');
+});
 
 Route::get('/productlist', function () {
     return view('template.productlist');
