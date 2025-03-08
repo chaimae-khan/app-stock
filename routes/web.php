@@ -12,6 +12,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resources([
@@ -19,12 +20,15 @@ Route::resources([
     'users' => UserController::class,
     'products' => ProductController::class,
 ]);
-Route::get('/', function () {
-    return view('template.index');
-});
+// Route::get('/', function () {
+//     return view('template.index');
+// });
 
 Route::get('/productlist', function () {
     return view('template.productlist');
+});
+Route::get('/signin', function () {
+    return view('template.signin');
 });
 Route::get('/addproduct', function () {
     return view('template.addproduct');
