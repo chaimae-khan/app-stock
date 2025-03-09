@@ -77,6 +77,9 @@
 	    <!-- Main CSS -->
         
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+
+		<link rel="stylesheet" href="{{asset('assets/css/styleNotification.css')}}">
+		<script src="{{asset('assets/js/notification.js')}}"></script>
 </head>
 <body>
 <div id="global-loader">
