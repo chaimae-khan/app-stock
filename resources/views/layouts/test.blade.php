@@ -941,7 +941,7 @@
 </div>
 
 <!-- Replace the part right after the sidebar div with this -->
-<div class="page-wrapper">
+{{-- <div class="page-wrapper">
     <div class="content">
         <div class="container-fluid">
             @if ($message = Session::get('success'))
@@ -953,7 +953,7 @@
             @yield('content')  <!-- This is where your content will be rendered -->
         </div>
     </div>
-</div>
+</div> --}}
 
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ asset('assets/js/feather.min.js') }}"></script>
@@ -971,21 +971,3 @@
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-{{-- 
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="f52e46651b76ad8cee41e0c1-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91db54f94b48343d","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"3ca157e612a14eccbb30cf6db6691c29"}' crossorigin="anonymous"></script> --}}
-</body>
-</html>
-
-@yield('scripts')
-</body>
-</html>
