@@ -9,6 +9,8 @@
     var csrf_token                      = "{{csrf_token()}}";
     var Adduser                       = "{{route('users.store')}}";
     var users                      = "{{route('users.index')}}";
+    var UpdateUser                      = "{{url('updateUser')}}";
+    var DeleteUser                      = "{{url('DeleteUser')}}";
    /*  var UpdateLivreurs                   = "{{url('UpdateLivreurs')}}";
     var livreur                         = "{{url('livreur')}}"; */
 </script>

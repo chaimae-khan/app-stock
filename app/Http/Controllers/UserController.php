@@ -63,7 +63,7 @@ class UserController extends Controller
                             </a>';
     
                     // زر الحذف
-                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteCompany"
+                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteuser"
                                 data-id="' . $row->id . '" data-bs-toggle="tooltip" 
                                 title="Supprimer company">
                                 <i class="fa-solid fa-trash text-danger"></i>
@@ -178,7 +178,67 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request)
+    public function update(Request $request)
+    {
+       
+        $user = User::find($request->id);
+
+       
+
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            // ✅ Exclure l'ID actuel
+            
+            'password' => 'nullable|min:6',
+        ], [
+            'required' => 'Le champ :attribute est requis.',
+            
+            'password.min' => 'Le mot de passe doit contenir au moins 6 caractères.',
+        ], [
+            'name' => 'nom complet',
+            'email' => 'mail',
+            
+            'password' => 'mot de passe',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ], 400);
+        }
+
+        // ✅ Utilisation de update() au lieu de save()
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
+        ]);
+
+        // ✅ Synchronisation des rôles si fournis
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Utilisateur mis à jour avec succès',
+        ]);
+       
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user , Request $request)
     {
         $user = User::find($request->id);
 
@@ -188,77 +248,21 @@ class UserController extends Controller
                 'message' => 'Utilisateur non trouvé'
             ], 404);
         }
-    
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id, // Exclure l'ID actuel de la vérification d'unicité
-            'phone' => 'required',
-            'password' => 'nullable|min:6',
-        ], [
-            'required' => 'Le champ :attribute est requis.',
-            'email.email' => 'Le champ mail doit être une adresse valide.',
-            'email.unique' => 'Cet email est déjà utilisé, veuillez en choisir un autre.',
-            'password.min' => 'Le mot de passe doit contenir au moins 6 caractères.',
-        ], [
-            'name' => 'nom complet',
-            'email' => 'mail',
-            'phone' => 'téléphone',
-            'password' => 'mot de passe',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->messages(),
-            ], 400);
-        }
-    
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-    
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-    
-        if ($user->save()) {
-            if ($request->has('roles')) {
-                $user->syncRoles($request->roles); // Met à jour les rôles
-            }
-    
+
+        // Supprimer l'utilisateur
+        if ($user->delete()) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Utilisateur mis à jour avec succès',
+                'message' => 'Utilisateur supprimé avec succès'
             ]);
         }
-    
+
         return response()->json([
             'status' => 500,
-            'message' => 'Quelque chose ne va pas'
+            'message' => 'Une erreur est survenue lors de la suppression'
         ], 500);
-        /* $input = $request->all();
- 
-        if(!empty($request->password)){
-            $input['password'] = Hash::make($request->password);
-        }else{
-            $input = $request->except('password');
-        }
-        
-        $user->update($input);
-
-        $user->syncRoles($request->roles);
-
-        return redirect()->back()
-                ->withSuccess('User is updated successfully.'); */
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user): RedirectResponse
-    {
         // About if user is Super Admin or User ID belongs to Auth User
-        if ($user->hasRole('Super Admin') || $user->id == auth()->user()->id)
+        /* if ($user->hasRole('Super Admin') || $user->id == auth()->user()->id)
         {
             abort(403, 'USER DOES NOT HAVE THE RIGHT PERMISSIONS');
         }
@@ -266,6 +270,6 @@ class UserController extends Controller
         $user->syncRoles([]);
         $user->delete();
         return redirect()->route('users.index')
-                ->withSuccess('User is deleted successfully.');
+                ->withSuccess('User is deleted successfully.'); */
     }
 }

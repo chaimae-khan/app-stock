@@ -49,23 +49,66 @@ $(document).ready(function () {
                 e.preventDefault();
                 $('#ModalEditUser').modal("show");
                 var IdUser          = $(this).attr('data-id');
-               
                 var name             = $(this).closest('tr').find('td:eq(0)').text();
                 var email            = $(this).closest('tr').find('td:eq(1)').text();
-                
-                var role             = $(this).closest('tr').find('td:eq(3)').text();
-                
-                
                 $('#name').val(name);
-                
                 $('#email').val(email);
-                
-                $('#phone').val(phone);
-                
-                
                 $('#BtnUpdateUser').attr('data-value',IdUser);
-                
+            });
 
+            $(selector + ' tbody').on('click', '.deleteuser', function(e)
+            {
+                e.preventDefault();
+                var IdUser = $(this).attr('data-id');
+                let notifier = new AWN();
+
+                let onOk = () => {
+                   
+                    
+                    $.ajax({
+                        type: "post",
+                        url: DeleteUser,
+                        data: 
+                        {
+                            id : IdUser,
+                            _token: csrf_token,
+                        },
+                        dataType: "json",
+                        success: function (response) 
+                        {
+                            if(response.status == 200)
+                            {
+                                new AWN().success(response.message, {durations: {success: 5000}});
+                                $('.TableUsers').DataTable().ajax.reload();
+                            }   
+                            else if(response.status == 404)
+                            {
+                                new AWN().warning(response.message, {durations: {warning: 5000}});
+                            }  
+                        },
+                        error: function() {
+                           
+                            new AWN().alert("Une erreur est survenue, veuillez réessayer.", { durations: { alert: 5000 } });
+                        }
+                    });
+                   
+                };
+
+                let onCancel = () => {
+                    notifier.info('Annulation de la suppression');
+                };
+
+                notifier.confirm(
+                    'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+                    onOk,
+                    onCancel,
+                    {
+                        labels: {
+                            confirm: 'Supprimer',
+                            cancel: 'Annuler'
+                        }
+                    }
+                );
             });
         }
     });
@@ -154,11 +197,11 @@ $(document).ready(function () {
 
     $('#BtnUpdateUser').on('click', function(e) {
         e.preventDefault();
-        alert($(this).attr('data-value'));
+        
         let formData = new FormData($('#FormUpdateUser')[0]);
         formData.append('_token', csrf_token);
-        formData.append('_method', 'PUT'); // Add method as PUT for updating
-    
+        formData.append('id', $(this).attr('data-value')); // Add method as PUT for updating
+       
         $('#BtnUpdateUser').prop('disabled', true).text('Mise à jour...');
     
         $.ajax({
@@ -172,7 +215,7 @@ $(document).ready(function () {
                 $('#BtnUpdateUser').prop('disabled', false).text('Mettre à jour');
                 if (response.status == 200) {
                     new AWN().success(response.message, {durations: {success: 5000}});
-                    $('#ModalUpdateUser').modal('hide');
+                    $('#ModalEditUser').modal('hide');
                     $('.TableUsers').DataTable().ajax.reload();
                 }  
                 else if (response.status == 404) {
