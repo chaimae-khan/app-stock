@@ -27,14 +27,21 @@ Route::resources([
 Route::get('/productlist', function () {
     return view('template.productlist');
 });
-Route::get('/adduser', function () {
+/* Route::get('/adduser', function () {
     return view('Users.create');
-});
+}); */
+Route::post('adduser',[UserController::class,'store']);
 // Route::get('/signin', function () {
 //     return view('template.signin');
 // });
 Route::get('/addproduct', function () {
     return view('template.addproduct');
+});
+Route::get('/test', function () {
+    return view('template.test');
+});
+Route::get('/sidebar', function () {
+    return view('layouts.sidebar');
 });
 Route::get('/categorylist', function () {
     return view('template.categorylist');
