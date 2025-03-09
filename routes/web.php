@@ -78,5 +78,8 @@ Route::get('/userlists', function() {
 });
 
 
+Route::post('updateUser' ,[UserController::class,'update']);
+
+
 
 

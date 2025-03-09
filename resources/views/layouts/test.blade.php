@@ -61,11 +61,12 @@
 		<!-- Datatable CSS -->
 		
 		<link rel="stylesheet" href="{{asset('assets/css/dataTables.dataTables.bootstrap5.min.css')}}">
+		
 
 		<!-- Fontawesome CSS -->
 		
 		<link rel="stylesheet" href="{{asset('assets/css/fontawesome.min.css')}}">
-
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 		
 		<link rel="stylesheet" href="{{asset('assets/plugins/fontawesome/css/all.min.css')}}">
@@ -505,7 +506,7 @@
     </div>
 </div>
 
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -938,7 +939,7 @@
 </ul>
 </div>
 </div>
-</div>
+</div> --}}
 
 <!-- Replace the part right after the sidebar div with this -->
 {{-- <div class="page-wrapper">
