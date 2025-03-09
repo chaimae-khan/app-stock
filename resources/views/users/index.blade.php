@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-@extends('layouts.test')
 
-@section('content')
-
-<div class="card">
-=======
 @extends('layouts.test')  
 @section('content')  
 <div class="content">
@@ -545,8 +539,8 @@
     </div>
     <!-- /product list -->
 </div>
-{{-- <div class="card">
->>>>>>> f0c1a3870d53afc1d3988b46cce32887e01314db
+<div class="card">
+
     <div class="card-header">Manage Users</div>
     <div class="card-body">
         
@@ -614,10 +608,5 @@
         {{ $users->links() }}
 
     </div>
-<<<<<<< HEAD
-</div>
-    
-=======
-</div> --}}
->>>>>>> f0c1a3870d53afc1d3988b46cce32887e01314db
+
 @endsection
