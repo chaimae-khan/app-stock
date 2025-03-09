@@ -433,17 +433,20 @@
 </div>
 </div>
 
-<!-- Content area -->
-@if ($message = Session::get('success'))
-    <div class="alert alert-success text-center" role="alert">
-        {{ $message }}
+<!-- Replace the part right after the sidebar div with this -->
+<div class="page-wrapper">
+    <div class="content">
+        <div class="container-fluid">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success text-center" role="alert">
+                    {{ $message }}
+                </div>
+            @endif
+
+            @yield('content')  <!-- This is where your content will be rendered -->
+        </div>
     </div>
-@endif
-
-@yield('content')
-
 </div>
-
 
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ asset('assets/js/feather.min.js') }}"></script>

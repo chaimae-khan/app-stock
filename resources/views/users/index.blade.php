@@ -1,5 +1,7 @@
-@extends('layouts.test')  
-@section('content')  
+@extends('layouts.test')
+
+@section('content')
+
 <div class="card">
     <div class="card-header">Manage Users</div>
     <div class="card-body">
@@ -9,11 +11,11 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">S#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Roles</th>
-                    <th scope="col">Action</th>
+                <th scope="col">S#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +52,7 @@
                                     @endif
                                 @endcan
                             @endif
+
                         </form>
                     </td>
                 </tr>
@@ -64,6 +67,8 @@
         </table>
 
         {{ $users->links() }}
+
     </div>
 </div>
+    
 @endsection
