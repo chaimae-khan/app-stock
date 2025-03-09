@@ -288,8 +288,8 @@
 <li class="submenu">
 <a href="javascript:void(0);"><img src="{{ asset('assets/img/icons/users1.svg') }}" alt="img"><span> Personnes</span> <span class="menu-arrow"></span></a>
 <ul>
-<li><a href="customerlist">Liste des clients</a></li>
-<li><a href="addcustomer">Ajouter un client</a></li>
+<li><a href="customerlist">Liste des formateur</a></li>
+<li><a href="{{route('users.create')}}">Ajouter un formateur</a></li>
 <li><a href="supplierlist">Liste des fournisseurs</a></li>
 <li><a href="addsupplier">Ajouter un fournisseur</a></li>
 <li><a href="userlist">Liste des utilisateurs</a></li>
@@ -310,10 +310,10 @@
 <a href="components"><i data-feather="layers"></i><span> Composants</span> </a>
 </li>
 <li>
-<a href="blankpage"><i data-feather="file"></i><span> Page vierge</span> </a>
+<!-- <a href="blankpage"><i data-feather="file"></i><span> Page vierge</span> </a> -->
 </li>
 <li class="submenu">
-<a href="javascript:void(0);"><i data-feather="alert-octagon"></i> <span> Pages d'erreur</span> <span class="menu-arrow"></span></a>
+<!-- <a href="javascript:void(0);"><i data-feather="alert-octagon"></i> <span> Pages d'erreur</span> <span class="menu-arrow"></span></a> -->
 <ul>
 <li><a href="error-404.">Erreur 404</a></li>
 <li><a href="error-500.">Erreur 500</a></li>

@@ -100,7 +100,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email', // ✅ التحقق من البريد الإلكتروني الفريد
-            'phone' => 'required',
             'password' => 'required|min:6',
         ], [
             'required' => 'Le champ :attribute est requis.',
@@ -110,7 +109,6 @@ class UserController extends Controller
         ], [
             'name' => 'nom complet',
             'email' => 'mail',
-            'phone' => 'téléphone',
             'password' => 'mot de passe',
         ]);
         
