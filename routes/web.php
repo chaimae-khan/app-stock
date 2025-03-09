@@ -76,3 +76,7 @@ Route::get('/newuser', function() {
 Route::get('/userlists', function() {
     return view('template.userlists');
 });
+
+
+
+

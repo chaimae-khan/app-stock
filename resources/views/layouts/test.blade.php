@@ -9,7 +9,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Dreams Pos admin template</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
+{{-- <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
@@ -22,7 +22,61 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/fontawesome.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}">
 
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
+<script src="{{asset('assets/js/theme-script.js')}}" type="f52e46651b76ad8cee41e0c1-text/javascript"></script>
+
+		{{-- <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+		<!-- Apple Touch Icon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png"> --}}
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+		
+		<!-- Datetimepicker CSS -->
+		<link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+
+		<!-- animation CSS -->
+		<link rel="stylesheet" href="{{asset('assets/css/animate.css')}}">
+
+		<!-- Feathericon CSS -->
+		<link rel="stylesheet" href="{{asset('assets/css/feather.css')}}">
+
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+
+		<!-- Summernote CSS -->
+		
+		<link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
+
+		<!-- Bootstrap Tagsinput CSS -->
+		
+		<link rel="stylesheet" href="{{asset('assets/css/bootstrap-tagsinput.css')}}">
+
+	   	<!-- Tabler Icon CSS -->
+	    
+	    <link rel="stylesheet" href="{{asset('assets/css/tabler-icons.css')}}">
+
+		<!-- Datatable CSS -->
+		
+		<link rel="stylesheet" href="{{asset('assets/css/dataTables.dataTables.bootstrap5.min.css')}}">
+
+		<!-- Fontawesome CSS -->
+		
+		<link rel="stylesheet" href="{{asset('assets/css/fontawesome.min.css')}}">
+
+
+		
+		<link rel="stylesheet" href="{{asset('assets/plugins/fontawesome/css/all.min.css')}}">
+		
+		<!-- Color Picker Css -->
+
+	<link rel="stylesheet" href="{{asset('assets/css/nano.min.css')}}">
+
+	    <!-- Main CSS -->
+        
+        <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 </head>
 <body>
 <div id="global-loader">
@@ -444,17 +498,42 @@
 
 </div>
 
-
-<script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+{{-- 
+<script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script> --}}
+<script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ asset('assets/js/feather.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/js/summernote-bs4.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap-tagsinput.js') }}"></script>
+<script src="{{ asset('assets/js/pickr.es5.min.js') }}"></script>
+<script src="{{ asset('assets/js/theme-colorpicker.js') }}"></script>
+
+
+<script src="{{ asset('assets/js/dataTables.dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{asset('assets/js/moment.min.js')}}"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/sweetalert/sweetalerts.min.js') }}"></script>
 <script src="{{ asset('assets/js/script.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- 
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="f52e46651b76ad8cee41e0c1-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"91db54f94b48343d","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"3ca157e612a14eccbb30cf6db6691c29"}' crossorigin="anonymous"></script> --}}
+</body>
+</html>
 
 @yield('scripts')
 </body>
