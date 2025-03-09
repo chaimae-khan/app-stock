@@ -112,7 +112,7 @@ class UserController extends Controller
             'password' => 'mot de passe',
         ]);
         
-        if ($validator->messages()) {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
                 'errors' => $validator->messages(),
