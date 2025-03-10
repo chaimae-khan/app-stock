@@ -347,16 +347,23 @@
 </ul>
 </li>
 <li class="submenu">
-<a href="javascript:void(0);"><img src="{{ asset('assets/img/icons/users1.svg') }}" alt="img"><span> People</span> <span class="menu-arrow"></span></a>
+	<a href="javascript:void(0);" class="{{ Request::is('users') ? 'active' : '' }}" class="{{Request::is('users') ? 'subdrop' : ''}}">
+		<img src="{{ asset('assets/img/icons/users1.svg') }}" alt="img">
+		<span> People</span> 
+		<span class="menu-arrow"></span>
+	</a>
+
+ 
 <ul>
-<li><a href="customerlist.html">Customer List</a></li>
+<li><a href="{{route('roles.index')}}">Role List</a></li>
 <li><a href="addcustomer.html">Add Customer </a></li>
 <li><a href="supplierlist.html">Supplier List</a></li>
 <li><a href="addsupplier.html">Add Supplier </a></li>
-<li><a href="userlist.html">User List</a></li>
-<li><a href="{{ route('users.create') }}" class="active">Add User</a></li>
+<li><a href="{{route('users.index')}}" class="{{Request::is('users') ? 'active' : ''}}">User List</a></li>
+
+{{-- <li><a href="{{ route('users.create') }}" class="active">Add User</a></li>
 <li><a href="storelist.html">Store List</a></li>
-<li><a href="addstore.html">Add Store</a></li>
+<li><a href="addstore.html">Add Store</a></li> --}}
 </ul>
 </li>
 <li class="submenu">
