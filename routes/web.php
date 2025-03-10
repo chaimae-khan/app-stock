@@ -81,6 +81,9 @@ Route::get('/userlists', function() {
 Route::post('updateUser' ,[UserController::class,'update']);
 Route::post('DeleteUser' ,[UserController::class,'destroy']);
 
+Route::post('updateRole'   , [RoleController::class,'update']);
+Route::post('DeleteRole'   , [RoleController::class,'destroy']);
+
 
 
 

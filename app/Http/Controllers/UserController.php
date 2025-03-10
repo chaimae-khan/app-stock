@@ -56,16 +56,16 @@ class UserController extends Controller
                     $btn = '';
     
                     // زر التعديل
-                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editUser"
-                                data-id="' . $row->id . '"  
+                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editRoles"
+                                data-id="' . $row->id . '"  data-bs-toggle="tooltip"  title="modifier roles"
                                 >
                                 <i class="fa-solid fa-pen-to-square text-primary"></i>
                             </a>';
     
                     // زر الحذف
-                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteuser"
+                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteRoles"
                                 data-id="' . $row->id . '" data-bs-toggle="tooltip" 
-                                title="Supprimer company">
+                                title="Supprimer roles">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>';
     
