@@ -280,22 +280,14 @@
 <li>
 <a href="index.html"><img src="{{ asset('assets/img/icons/dashboard.svg') }}" alt="img"><span> Dashboard</span> </a>
 </li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="{{ asset('assets/img/icons/product.svg') }}" alt="img"><span> Product</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="productlist.html">Product List</a></li>
-<li><a href="addproduct.html">Add Product</a></li>
-<li><a href="categorylist.html">Category List</a></li>
-<li><a href="addcategory.html">Add Category</a></li>
-<li><a href="subcategorylist.html">Sub Category List</a></li>
-<li><a href="subaddcategory.html">Add Sub Category</a></li>
-<li><a href="brandlist.html">Brand List</a></li>
-<li><a href="addbrand.html">Add Brand</a></li>
-<li><a href="{{ url('tva') }}">TVA</a></li>
-<li><a href="importproduct.html">Import Products</a></li>
-<li><a href="barcode.html">Print Barcode</a></li>
-</ul>
-</li>
+	<li >
+		<a href="{{route('products.index')}}" class="{{Request::is('products') ? 'active' : ''}}">
+			<img src="{{ asset('assets/img/icons/product.svg') }}" alt="img">
+			<span> Product</span> 
+			
+		</a>
+
+	</li>
 <li class="submenu">
 <a href="javascript:void(0);"><img src="{{ asset('assets/img/icons/sales1.svg') }}" alt="img"><span> Sales</span> <span class="menu-arrow"></span></a>
 <ul>
@@ -355,11 +347,13 @@
 
  
 <ul>
-<li><a href="{{route('roles.index')}}">Role List</a></li>
-<li><a href="addcustomer.html">Add Customer </a></li>
-<li><a href="supplierlist.html">Supplier List</a></li>
-<li><a href="addsupplier.html">Add Supplier </a></li>
-<li><a href="{{route('users.index')}}" class="{{Request::is('users') ? 'active' : ''}}">User List</a></li>
+	<li>
+		<a href="{{route('roles.index')}}" class="{{Request::is('roles') ? 'active' : ''}}">Role List</a>
+	</li>
+
+	<li>
+		<a href="{{route('users.index')}}" class="{{Request::is('users') ? 'active' : ''}}">User List</a>
+	</li>
 
 {{-- <li><a href="{{ route('users.create') }}" class="active">Add User</a></li>
 <li><a href="storelist.html">Store List</a></li>
@@ -375,12 +369,18 @@
 <li><a href="statelist.html">State list</a></li>
 </ul>
 </li>
-<li>
-<a href="components.html"><i data-feather="layers"></i><span> Components</span> </a>
-</li>
-<li>
-<a href="blankpage.html"><i data-feather="file"></i><span> Blank Page</span> </a>
-</li>
+	<li>
+		<a href="{{url('tva')}}" class="{{Request::is('tva') ? 'active' : ''}}">
+			<i class="fa-solid fa-percent"></i>
+			<span> Tva</span> 
+		</a>
+	</li>
+	<li>
+		<a href="{{url('categories')}}" class="{{Request::is('categories') ? 'active' : ''}}">
+			<i class="fa-solid fa-list"></i>
+			<span> Categories</span>
+		</a>
+	</li>
 <li class="submenu">
 <a href="javascript:void(0);"><i data-feather="alert-octagon"></i> <span> Error Pages </span> <span class="menu-arrow"></span></a>
 <ul>

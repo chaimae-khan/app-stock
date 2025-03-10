@@ -13,21 +13,21 @@ class ProductController extends Controller
     /**
      * Instantiate a new ProductController instance.
      */
-    public function __construct()
+    /* public function __construct()
     {
        $this->middleware('auth');
        $this->middleware('permission:view-product|create-product|edit-product|delete-product', ['only' => ['index','show']]);
        $this->middleware('permission:create-product', ['only' => ['create','store']]);
        $this->middleware('permission:edit-product', ['only' => ['edit','update']]);
        $this->middleware('permission:delete-product', ['only' => ['destroy']]);
-    }
+    } */
 
     /**
      * Display a listing of the resource.
      */
     public function index(): View
     {
-        return view('products.index', [
+        return view('Product.index', [
             'products' => Product::latest()->paginate(3)
         ]);
     }
