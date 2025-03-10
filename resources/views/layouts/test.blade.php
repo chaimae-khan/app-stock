@@ -291,6 +291,7 @@
 <li><a href="subaddcategory.html">Add Sub Category</a></li>
 <li><a href="brandlist.html">Brand List</a></li>
 <li><a href="addbrand.html">Add Brand</a></li>
+<li><a href="{{ url('tva') }}">TVA</a></li>
 <li><a href="importproduct.html">Import Products</a></li>
 <li><a href="barcode.html">Print Barcode</a></li>
 </ul>

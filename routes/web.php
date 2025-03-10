@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\TvaController;
 Auth::routes();
 
 Route::get('/', function () {
@@ -19,11 +19,24 @@ Route::resources([
     'roles' => RoleController::class,
     'users' => UserController::class,
     'products' => ProductController::class,
+   
 ]);
 // Route::get('/', function () {
 //     return view('template.index');
 // });
 
+// TVA Routes
+Route::get('tva', [App\Http\Controllers\TvaController::class, 'index']);
+Route::post('addTva', [App\Http\Controllers\TvaController::class, 'store']);
+Route::get('tva/{id}/edit', [App\Http\Controllers\TvaController::class, 'edit']);
+Route::post('updateTva', [App\Http\Controllers\TvaController::class, 'update']);
+Route::post('DeleteTva', [App\Http\Controllers\TvaController::class, 'destroy']);
+// Category Routes
+Route::get('categories', [App\Http\Controllers\CategoryController::class, 'index']);
+Route::post('addCategory', [App\Http\Controllers\CategoryController::class, 'store']);
+Route::get('categories/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit']);
+Route::post('updateCategory', [App\Http\Controllers\CategoryController::class, 'update']);
+Route::post('DeleteCategory', [App\Http\Controllers\CategoryController::class, 'destroy']);
 Route::get('/productlist', function () {
     return view('template.productlist');
 });
