@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class CategoryController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +19,13 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $dataCategory = DB::table('categories')
+            $dataCategory = DB::table('categories as c')
+                                ->join('users as u','u.id','c.iduser')
                 ->select(
-                    'categories.id',
-                    'categories.name',
-                    'categories.created_at'
+                    'c.id',
+                    'c.name',
+                    'u.name as username',
+                    'c.created_at'
                 );
 
             return DataTables::of($dataCategory)
@@ -76,6 +79,7 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->name,
+            'iduser' => Auth::user()->id,
         ]);
 
         if($category) {

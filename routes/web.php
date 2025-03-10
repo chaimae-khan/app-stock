@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TvaController;
+use App\Http\Controllers\CategoriesController;
 Auth::routes();
 
 Route::get('/', function () {
@@ -26,18 +27,20 @@ Route::resources([
 // });
 
 // TVA Routes
-Route::get('tva', [App\Http\Controllers\TvaController::class, 'index']);
-Route::post('addTva', [App\Http\Controllers\TvaController::class, 'store']);
-Route::get('tva/{id}/edit', [App\Http\Controllers\TvaController::class, 'edit']);
-Route::post('updateTva', [App\Http\Controllers\TvaController::class, 'update']);
-Route::post('DeleteTva', [App\Http\Controllers\TvaController::class, 'destroy']);
+Route::get('tva'                    , [TvaController::class,        'index'     ]);
+Route::post('addTva'                , [TvaController::class,        'store'     ]);
+Route::get('tva/{id}/edit'          , [TvaController::class,        'edit'      ]);
+Route::post('updateTva'             , [TvaController::class,        'update'    ]);
+Route::post('DeleteTva'             , [TvaController::class,        'destroy'   ]);
 // Category Routes
-Route::get('categories', [App\Http\Controllers\CategoryController::class, 'index']);
-Route::post('addCategory', [App\Http\Controllers\CategoryController::class, 'store']);
-Route::get('categories/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit']);
-Route::post('updateCategory', [App\Http\Controllers\CategoryController::class, 'update']);
-Route::post('DeleteCategory', [App\Http\Controllers\CategoryController::class, 'destroy']);
-Route::get('/productlist', function () {
+Route::get('categories'             , [CategoriesController::class,   'index'     ]);
+Route::post('addCategory'           , [CategoriesController::class,   'store'     ]);
+Route::get('categories/{id}/edit'   , [CategoriesController::class,   'edit'      ]);
+Route::post('updateCategory'        , [CategoriesController::class,   'update'    ]);
+Route::post('DeleteCategory'        , [CategoriesController::class,   'destroy'   ]);
+
+
+Route::get('/productlist'           , function () {
     return view('template.productlist');
 });
 /* Route::get('/adduser', function () {

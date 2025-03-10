@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('value', 5, 2);
+            $table->foreignId('iduser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

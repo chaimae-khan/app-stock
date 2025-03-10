@@ -36,7 +36,7 @@
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Value</th>
-                                    <th scope="col">Created By</th>
+                                    <th scope="col">créer par</th>
                                     <th scope="col">créer le</th>
                                     <th scope="col">Action</th>    
                                 </tr>

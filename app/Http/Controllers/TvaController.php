@@ -19,12 +19,14 @@ class TvaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $dataTva = DB::table('tvas')
+            $dataTva = DB::table('tvas as t')
+                        ->join('users as u','u.id','t.iduser')
                 ->select(
-                    'tvas.id',
-                    'tvas.name',
-                    'tvas.value',
-                    'tvas.created_at'
+                    't.id',
+                    't.name',
+                    't.value',
+                    'u.name as username',
+                    't.created_at'
                 );
 
             return DataTables::of($dataTva)

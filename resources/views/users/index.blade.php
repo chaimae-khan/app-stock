@@ -11,8 +11,7 @@
     var users                      = "{{route('users.index')}}";
     var UpdateUser                      = "{{url('updateUser')}}";
     var DeleteUser                      = "{{url('DeleteUser')}}";
-   /*  var UpdateLivreurs                   = "{{url('UpdateLivreurs')}}";
-    var livreur                         = "{{url('livreur')}}"; */
+   
 </script>
 <div class="card">
     
