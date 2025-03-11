@@ -376,6 +376,12 @@
 		</a>
 	</li>
 	<li>
+		<a href="{{url('subcategory')}}" class="{{Request::is('subcategory') ? 'active' : ''}}">
+			<i class="fa-solid fa-list"></i>
+			<span> Famille </span>
+		</a>
+	</li>
+	<li>
 		<a href="{{url('categories')}}" class="{{Request::is('categories') ? 'active' : ''}}">
 			<i class="fa-solid fa-list"></i>
 			<span> Categories</span>

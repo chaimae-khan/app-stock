@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TvaController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\subca;
 Auth::routes();
 
 Route::get('/', function () {
@@ -38,6 +40,12 @@ Route::post('addCategory'           , [CategoriesController::class,   'store'   
 Route::get('categories/{id}/edit'   , [CategoriesController::class,   'edit'      ]);
 Route::post('updateCategory'        , [CategoriesController::class,   'update'    ]);
 Route::post('DeleteCategory'        , [CategoriesController::class,   'destroy'   ]);
+// sub Category Routes
+Route::get('subcategory', [SubCategoryController::class, 'index']);
+Route::post('addSubCategory', [SubCategoryController::class, 'store']);
+Route::post('updateSubCategory', [SubCategoryController::class, 'update']);
+Route::post('DeleteSubCategory', [SubCategoryController::class, 'destroy']);
+Route::get('editSubCategory/{id}', [SubCategoryController::class, 'edit']);
 
 
 Route::get('/productlist'           , function () {
