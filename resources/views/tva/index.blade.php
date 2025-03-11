@@ -1,7 +1,7 @@
-@extends('layouts.test')  
-@section('content')  
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@extends('dashboard.index')
+
+@section('dashboard')
 <script src="{{asset('assets/js/tva/script.js')}}"></script>
 <script>
     var csrf_token                = "{{csrf_token()}}";
@@ -10,50 +10,69 @@
     var UpdateTva                 = "{{url('updateTva')}}";
     var DeleteTva                 = "{{url('DeleteTva')}}";
 </script>
-<div class="card">
-    
-<div class="content">
-    <div class="page-header">
-        
-        <div class="page-btn">
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAddTva">
-                <i class="fa-solid fa-plus"></i> Add TVA
-            </a>
-        </div>	
-        
-    </div>
-    
-    <!-- TVA list -->
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-            
-            
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer table-responsive ">
-                        <table class="table datatable dataTable no-footer TableTvas" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">créer par</th>
-                                    <th scope="col">créer le</th>
-                                    <th scope="col">Action</th>    
-                                </tr>
-                            </thead>
-                            <tbody>
-        
-                            </tbody>
-                        </table>
-                    </div>
+<div class="content-page">
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="fs-18 fw-semibold m-0">List de taxe </h4>
+                </div>
+                
+                <div class="text-end">
+                    <ol class="breadcrumb m-0 py-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                        <li class="breadcrumb-item active">Tva</li>
+                    </ol>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <div class=" mb-3">
+                                <button class="btn btn-primary" style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#ModalAddTva">Ajoute tva</button>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="datatable-wrapper datatable-loading no-footer sortable fixed-height fixed-columns">
+                                    
+                                    <div class="datatable-container" style="height: 665.531px;">
+                                        <table class="table datatable datatable-table TableTvas" >
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="true">Name</th>
+                                                    <th data-sortable="true">Value</th>
+                                                    <th data-sortable="true">créer par</th>
+                                                    <th data-sortable="true">créer le</th>
+                                                    <th data-sortable="true">Action</th>  
+                                                </tr>
+                                            </thead>
+                                                <tbody>
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                                    
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
-    
-    
-    <!-- Add TVA Modal -->
-    <div class="modal fade" id="ModalAddTva" tabindex="-1" aria-labelledby="ModalAddTvaLabel" aria-hidden="true">
+
+
+       
+
+        <!-- Add TVA Modal -->
+        <div class="modal fade" id="ModalAddTva" tabindex="-1" aria-labelledby="ModalAddTvaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -64,7 +83,7 @@
                     <div class="row">
                         <ul class="validationAddTva"></ul>
                         <form action="{{ url('addTva') }}" id="FormAddTva">
-                            {{-- @csrf --}}
+                            
                     
                             <!-- Name & Value -->
                             <div class="row">
@@ -99,7 +118,9 @@
         </div>
     </div>
 
-    <!-- Edit TVA Modal -->
+
+
+        <!-- Edit TVA Modal -->
     <div class="modal fade" id="ModalEditTva" tabindex="-1" aria-labelledby="ModalEditTvaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -111,7 +132,6 @@
                     <div class="row">
                         <ul class="validationEditTva"></ul>
                         <form action="{{ url('updateTva') }}" id="FormUpdateTva">
-                            {{-- @csrf --}}
                             
                             <!-- Name & Value -->
                             <div class="row">
@@ -146,5 +166,15 @@
         </div>
     </div>
 </div>
+
+
+
+        
+        
+        
+        
+</div>
+
+
 
 @endsection

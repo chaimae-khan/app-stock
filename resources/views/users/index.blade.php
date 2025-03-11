@@ -1,9 +1,9 @@
 
 
-@extends('layouts.test')  
-@section('content')  
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@extends('dashboard.index')
+
+@section('dashboard')
 <script src="{{asset('assets/js/Users/script.js')}}"></script>
 <script>
     var csrf_token                      = "{{csrf_token()}}";
@@ -13,53 +13,71 @@
     var DeleteUser                      = "{{url('DeleteUser')}}";
    
 </script>
-<div class="card">
-    
-    
+<div class="content-page">
+    <div class="content">
 
+        <!-- Start Content-->
+        <div class="container-fluid">
 
-<div class="content">
-    <div class="page-header">
-        
-        <div class="page-btn">
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAddUser">
-                <i class="fa-solid fa-user"></i> Add user
-            </a>
-        </div>	
-        
-    </div>
-    
-    <!-- /product list -->
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-            
-            
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer table-responsive ">
-                        <table class="table datatable dataTable no-footer TableUsers" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                            <thead class="thead-light">
-                                <tr>
-                                    
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    
-                                    <th scope="col">roles</th>
-                                    <th scope="col">créer le</th>
-                                    <th scope="col">Action</th>    
-                                </tr>
-                            </thead>
-                            <tbody>
-        
-                            </tbody>
-                    </table>
-                    
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="fs-18 fw-semibold m-0">List de users </h4>
+                </div>
+                
+                <div class="text-end">
+                    <ol class="breadcrumb m-0 py-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                        <li class="breadcrumb-item active">users</li>
+                    </ol>
                 </div>
             </div>
-    </div>
-    
-    
-    <!-- Modal -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <div class=" mb-3">
+                                <button class="btn btn-primary" style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#ModalAddUser">Add user</button>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="datatable-wrapper datatable-loading no-footer sortable fixed-height fixed-columns">
+                                    
+                                    <div class="datatable-container" style="height: 665.531px;">
+                                        <table class="table datatable datatable-table TableUsers" >
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="true">Name</th>
+                                                    <th data-sortable="true">Email</th>
+                                                    
+                                                    <th data-sortable="true">roles</th>
+                                                    <th data-sortable="true">créer le</th>
+                                                    <th data-sortable="true">Action</th>    
+                                                    
+                                                    
+                                                </tr>
+                                            </thead>
+                                                <tbody>
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                                    
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+       
+
+         <!-- Modal -->
 <div class="modal fade" id="ModalAddUser" tabindex="-1" aria-labelledby="ModalAddUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -71,7 +89,7 @@
                 <div class="row">
                     <ul class="validationAddUser"></ul>
                     <form action="{{ route('users.store') }}" id="FormAddUser">
-                        {{-- @csrf --}}
+                       
                 
                         <!-- Full Name & Email -->
                         <div class="row">
@@ -129,7 +147,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Role</label>
-                                    <select class="select @error('roles') is-invalid @enderror" name="roles">
+                                    <select class="select form-select @error('roles') is-invalid @enderror" name="roles">
                                         <option value="">Select</option>
                                         @forelse ($roles as $role)
                                         @if ($role != 'Super Admin')
@@ -168,20 +186,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 <div class="modal fade" id="ModalEditUser" tabindex="-1" aria-labelledby="ModalAddUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -193,7 +198,7 @@
                 <div class="row">
                     <ul class="validationAddUser"></ul>
                     <form action="{{ url('updateUser') }}" id="FormUpdateUser">
-                        {{-- @csrf --}}
+                       
                 
                         <!-- Full Name & Email -->
                         <div class="row">
@@ -251,7 +256,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Role</label>
-                                    <select class="select @error('roles') is-invalid @enderror" name="roles" id="roles">
+                                    <select class="select form-select @error('roles') is-invalid @enderror" name="roles" id="roles">
                                         <option value="">Select</option>
                                         @forelse ($roles as $role)
                                         @if ($role != 'Super Admin')
@@ -287,9 +292,14 @@
         </div>
     </div>
 </div>
-    
-</div>
 
+
+
+        
+        
+        
+        
+</div>
 
 
 
