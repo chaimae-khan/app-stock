@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubCategory;
-use App\Models\Category;
+use App\Models\Rayon;
+use App\Models\Local;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SubCategoryController extends Controller
+class RayonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,32 +20,32 @@ class SubCategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $dataSubCategory = DB::table('sub_categories as sc')
-                ->join('users as u', 'u.id', 'sc.iduser')
-                ->join('categories as c', 'c.id', 'sc.id_categorie')
+            $dataRayon = DB::table('rayons as r')
+                ->join('users as u', 'u.id', 'r.iduser')
+                ->join('locals as l', 'l.id', 'r.id_local')
                 ->select(
-                    'sc.id',
-                    'sc.name',
-                    'c.name as category_name',
+                    'r.id',
+                    'r.name',
+                    'l.name as local_name',
                     'u.name as username',
-                    'sc.created_at'
+                    'r.created_at'
                 );
 
-            return DataTables::of($dataSubCategory)
+            return DataTables::of($dataRayon)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
 
                     // Edit button
-                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editSubCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editRayon"
                                 data-id="' . $row->id . '">
                                 <i class="fa-solid fa-pen-to-square text-primary"></i>
                             </a>';
 
                     // Delete button
-                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteSubCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteRayon"
                                 data-id="' . $row->id . '" data-bs-toggle="tooltip" 
-                                title="Supprimer Sous-catégorie">
+                                title="Supprimer Rayon">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>';
 
@@ -55,11 +55,11 @@ class SubCategoryController extends Controller
                 ->make(true);
         }
         
-        $categories = Category::all();
+        $locals = Local::all();
         
-        return view('subcategory.index', [
-            'subcategories' => SubCategory::latest('id')->paginate(10),
-            'categories' => $categories
+        return view('rayon.index', [
+            'rayons' => Rayon::latest('id')->paginate(10),
+            'locals' => $locals
         ]);
     }
 
@@ -70,13 +70,13 @@ class SubCategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'id_categorie' => 'required|exists:categories,id',
+            'id_local' => 'required|exists:locals,id',
         ], [
             'required' => 'Le champ :attribute est requis.',
-            'exists' => 'La catégorie sélectionnée n\'existe pas.',
+            'exists' => 'Le local sélectionné n\'existe pas.',
         ], [
             'name' => 'nom',
-            'id_categorie' => 'catégorie',
+            'id_local' => 'local',
         ]);
         
         if ($validator->fails()) {
@@ -86,28 +86,28 @@ class SubCategoryController extends Controller
             ], 400);
         }
 
-        // Check if subcategory already exists with the same name in the same category
-        $exists = SubCategory::where('name', $request->name)
-            ->where('id_categorie', $request->id_categorie)
+        // Check if rayon already exists with the same name in the same local
+        $exists = Rayon::where('name', $request->name)
+            ->where('id_local', $request->id_local)
             ->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette sous-catégorie existe déjà pour cette catégorie',
+                'message' => 'Ce rayon existe déjà pour ce local',
             ], 409);
         }
 
-        $subcategory = SubCategory::create([
+        $rayon = Rayon::create([
             'name' => $request->name,
-            'id_categorie' => $request->id_categorie,
+            'id_local' => $request->id_local,
             'iduser' => Auth::user()->id,
         ]);
 
-        if($subcategory) {
+        if($rayon) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie créée avec succès',
+                'message' => 'Rayon créé avec succès',
             ]);
         } else { 
             return response()->json([
@@ -122,16 +122,16 @@ class SubCategoryController extends Controller
      */
     public function edit($id)
     {
-        $subcategory = SubCategory::find($id);
+        $rayon = Rayon::find($id);
         
-        if (!$subcategory) {
+        if (!$rayon) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Rayon non trouvé'
             ], 404);
         }
         
-        return response()->json($subcategory);
+        return response()->json($rayon);
     }
 
     /**
@@ -139,24 +139,24 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request)
     {
-        $subcategory = SubCategory::find($request->id);
+        $rayon = Rayon::find($request->id);
         
-        if (!$subcategory) {
+        if (!$rayon) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Rayon non trouvé'
             ], 404);
         }
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'id_categorie' => 'required|exists:categories,id',
+            'id_local' => 'required|exists:locals,id',
         ], [
             'required' => 'Le champ :attribute est requis.',
-            'exists' => 'La catégorie sélectionnée n\'existe pas.',
+            'exists' => 'Le local sélectionné n\'existe pas.',
         ], [
             'name' => 'nom',
-            'id_categorie' => 'catégorie',
+            'id_local' => 'local',
         ]);
         
         if ($validator->fails()) {
@@ -166,32 +166,32 @@ class SubCategoryController extends Controller
             ], 400);
         }
         
-        // Check if another subcategory with the same name exists in the same category
-        $exists = SubCategory::where('name', $request->name)
-            ->where('id_categorie', $request->id_categorie)
+        // Check if another rayon with the same name exists in the same local
+        $exists = Rayon::where('name', $request->name)
+            ->where('id_local', $request->id_local)
             ->where('id', '!=', $request->id) // Exclude current record
             ->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette sous-catégorie existe déjà pour cette catégorie',
+                'message' => 'Ce rayon existe déjà pour ce local',
             ], 409);
         }
 
-        $subcategory->name = $request->name;
-        $subcategory->id_categorie = $request->id_categorie;
-        $saved = $subcategory->save();
+        $rayon->name = $request->name;
+        $rayon->id_local = $request->id_local;
+        $saved = $rayon->save();
         
         if ($saved) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie mise à jour avec succès',
+                'message' => 'Rayon mis à jour avec succès',
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'message' => 'Erreur lors de la mise à jour de la sous-catégorie',
+                'message' => 'Erreur lors de la mise à jour du rayon',
             ], 500);
         }
     }
@@ -201,19 +201,19 @@ class SubCategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $subcategory = SubCategory::find($request->id);
+        $rayon = Rayon::find($request->id);
 
-        if (!$subcategory) {
+        if (!$rayon) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Rayon non trouvé'
             ], 404);
         }
 
-        if ($subcategory->delete()) {
+        if ($rayon->delete()) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie supprimée avec succès'
+                'message' => 'Rayon supprimé avec succès'
             ]);
         }
 

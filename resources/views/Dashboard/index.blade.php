@@ -351,13 +351,27 @@
                                     <span> List de Categorie </span>
                                 </a>
                             </li>
+                            <li class="menu-title mt-2">local</li>
+                
+                            <li>
+                                <a class='tp-link' href='{{url('local')}}'>
+                                    <i class="fa-solid fa-list-check"></i>
+                                    <span> Local </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{url('rayon')}}'>
+                                    <i class="fa-solid fa-list-check"></i>
+                                    <span> Rayon </span>
+                                </a>
+                            </li>
 
                             <li class="menu-title mt-2">Sub Categories</li>
                 
                             <li>
                                 <a class='tp-link' href='{{url('categories')}}'>
                                     <i class="fa-solid fa-list-check"></i>
-                                    <span> List de Categorie </span>
+                                    <span> familie </span>
                                 </a>
                             </li>
 

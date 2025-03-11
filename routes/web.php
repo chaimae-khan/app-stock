@@ -8,7 +8,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TvaController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\subca;
+use App\Http\Controllers\LocalController;
+use App\Http\Controllers\RayonController;
+
 Auth::routes();
 
 Route::get('/', function () {
@@ -47,6 +49,18 @@ Route::post('updateSubCategory', [SubCategoryController::class, 'update']);
 Route::post('DeleteSubCategory', [SubCategoryController::class, 'destroy']);
 Route::get('editSubCategory/{id}', [SubCategoryController::class, 'edit']);
 
+// Local Routes
+Route::get('local', [LocalController::class, 'index']);
+Route::post('addLocal', [LocalController::class, 'store']);
+Route::post('updateLocal', [LocalController::class, 'update']);
+Route::post('DeleteLocal', [LocalController::class, 'destroy']);
+Route::get('editLocal/{id}', [LocalController::class, 'edit']);
+// Rayon Routes
+Route::get('rayon', [RayonController::class, 'index']);
+Route::post('addRayon', [RayonController::class, 'store']);
+Route::post('updateRayon', [RayonController::class, 'update']);
+Route::post('DeleteRayon', [RayonController::class, 'destroy']);
+Route::get('editRayon/{id}', [RayonController::class, 'edit']);
 
 Route::get('/productlist'           , function () {
     return view('template.productlist');

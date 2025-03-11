@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubCategory;
-use App\Models\Category;
+use App\Models\Local;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SubCategoryController extends Controller
+class LocalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,32 +19,30 @@ class SubCategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $dataSubCategory = DB::table('sub_categories as sc')
-                ->join('users as u', 'u.id', 'sc.iduser')
-                ->join('categories as c', 'c.id', 'sc.id_categorie')
+            $dataLocal = DB::table('locals as l')
+                ->join('users as u', 'u.id', 'l.iduser')
                 ->select(
-                    'sc.id',
-                    'sc.name',
-                    'c.name as category_name',
+                    'l.id',
+                    'l.name',
                     'u.name as username',
-                    'sc.created_at'
+                    'l.created_at'
                 );
 
-            return DataTables::of($dataSubCategory)
+            return DataTables::of($dataLocal)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
 
                     // Edit button
-                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editSubCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editLocal"
                                 data-id="' . $row->id . '">
                                 <i class="fa-solid fa-pen-to-square text-primary"></i>
                             </a>';
 
                     // Delete button
-                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteSubCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteLocal"
                                 data-id="' . $row->id . '" data-bs-toggle="tooltip" 
-                                title="Supprimer Sous-catégorie">
+                                title="Supprimer Local">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>';
 
@@ -55,11 +52,8 @@ class SubCategoryController extends Controller
                 ->make(true);
         }
         
-        $categories = Category::all();
-        
-        return view('subcategory.index', [
-            'subcategories' => SubCategory::latest('id')->paginate(10),
-            'categories' => $categories
+        return view('local.index', [
+            'locals' => Local::latest('id')->paginate(10)
         ]);
     }
 
@@ -70,13 +64,10 @@ class SubCategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'id_categorie' => 'required|exists:categories,id',
         ], [
             'required' => 'Le champ :attribute est requis.',
-            'exists' => 'La catégorie sélectionnée n\'existe pas.',
         ], [
             'name' => 'nom',
-            'id_categorie' => 'catégorie',
         ]);
         
         if ($validator->fails()) {
@@ -86,28 +77,25 @@ class SubCategoryController extends Controller
             ], 400);
         }
 
-        // Check if subcategory already exists with the same name in the same category
-        $exists = SubCategory::where('name', $request->name)
-            ->where('id_categorie', $request->id_categorie)
-            ->exists();
+        // Check if local already exists with the same name
+        $exists = Local::where('name', $request->name)->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette sous-catégorie existe déjà pour cette catégorie',
+                'message' => 'Ce local existe déjà',
             ], 409);
         }
 
-        $subcategory = SubCategory::create([
+        $local = Local::create([
             'name' => $request->name,
-            'id_categorie' => $request->id_categorie,
             'iduser' => Auth::user()->id,
         ]);
 
-        if($subcategory) {
+        if($local) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie créée avec succès',
+                'message' => 'Local créé avec succès',
             ]);
         } else { 
             return response()->json([
@@ -122,16 +110,16 @@ class SubCategoryController extends Controller
      */
     public function edit($id)
     {
-        $subcategory = SubCategory::find($id);
+        $local = Local::find($id);
         
-        if (!$subcategory) {
+        if (!$local) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Local non trouvé'
             ], 404);
         }
         
-        return response()->json($subcategory);
+        return response()->json($local);
     }
 
     /**
@@ -139,24 +127,21 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request)
     {
-        $subcategory = SubCategory::find($request->id);
+        $local = Local::find($request->id);
         
-        if (!$subcategory) {
+        if (!$local) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Local non trouvé'
             ], 404);
         }
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'id_categorie' => 'required|exists:categories,id',
         ], [
             'required' => 'Le champ :attribute est requis.',
-            'exists' => 'La catégorie sélectionnée n\'existe pas.',
         ], [
             'name' => 'nom',
-            'id_categorie' => 'catégorie',
         ]);
         
         if ($validator->fails()) {
@@ -166,32 +151,30 @@ class SubCategoryController extends Controller
             ], 400);
         }
         
-        // Check if another subcategory with the same name exists in the same category
-        $exists = SubCategory::where('name', $request->name)
-            ->where('id_categorie', $request->id_categorie)
+        // Check if another local with the same name exists
+        $exists = Local::where('name', $request->name)
             ->where('id', '!=', $request->id) // Exclude current record
             ->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette sous-catégorie existe déjà pour cette catégorie',
+                'message' => 'Ce local existe déjà',
             ], 409);
         }
 
-        $subcategory->name = $request->name;
-        $subcategory->id_categorie = $request->id_categorie;
-        $saved = $subcategory->save();
+        $local->name = $request->name;
+        $saved = $local->save();
         
         if ($saved) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie mise à jour avec succès',
+                'message' => 'Local mis à jour avec succès',
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'message' => 'Erreur lors de la mise à jour de la sous-catégorie',
+                'message' => 'Erreur lors de la mise à jour du local',
             ], 500);
         }
     }
@@ -201,19 +184,19 @@ class SubCategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $subcategory = SubCategory::find($request->id);
+        $local = Local::find($request->id);
 
-        if (!$subcategory) {
+        if (!$local) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Sous-catégorie non trouvée'
+                'message' => 'Local non trouvé'
             ], 404);
         }
 
-        if ($subcategory->delete()) {
+        if ($local->delete()) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Sous-catégorie supprimée avec succès'
+                'message' => 'Local supprimé avec succès'
             ]);
         }
 
