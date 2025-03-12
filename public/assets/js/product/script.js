@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    // Global variables to track whether dropdowns have been loaded
+    let subcategoriesLoaded = false;
+    let rayonsLoaded = false;
+
     // Dynamic script and CSS loading
     var datatablesScript = document.createElement('script');
     datatablesScript.src = 'https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js';
@@ -83,6 +87,10 @@ $(document).ready(function () {
                 // Disable edit button during loading
                 $(this).prop('disabled', true);
                 
+                // Reset dropdown load flags
+                subcategoriesLoaded = false;
+                rayonsLoaded = false;
+                
                 $.ajax({
                     type: "GET",
                     url: editProduct_url + "/" + productId,
@@ -103,7 +111,6 @@ $(document).ready(function () {
                         // Populate basic product information
                         $('#edit_id').val(response.id);
                         $('#edit_name').val(response.name);
-                        $('#edit_unite').val(response.unite);
                         $('#edit_price_achat').val(response.price_achat);
                         $('#edit_price_vente').val(response.price_vente);
                         $('#edit_code_barre').val(response.code_barre);
@@ -114,25 +121,22 @@ $(document).ready(function () {
                         // Set local dropdown
                         $('#edit_id_local').val(response.id_local);
                         
-                        // Use setTimeout to ensure DOM is updated before triggering
-                        setTimeout(function() {
-                            // Trigger change events to load dependent dropdowns
-                            $('#edit_id_categorie').trigger('change');
-                            $('#edit_id_local').trigger('change');
-                            
-                            // Ensure subcategory and rayon are set after loading
-                            if (response.id_subcategorie) {
-                                setTimeout(function() {
-                                    $('#edit_id_subcategorie').val(response.id_subcategorie);
-                                }, 200);
-                            }
-                            
-                            if (response.id_rayon) {
-                                setTimeout(function() {
-                                    $('#edit_id_rayon').val(response.id_rayon);
-                                }, 200);
-                            }
-                        }, 100);
+                        // Store selected values for setting after dropdowns are loaded
+                        var selectedSubcategory = response.id_subcategorie;
+                        var selectedRayon = response.id_rayon;
+                        
+                        // Clear dependent dropdowns
+                        $('#edit_id_subcategorie').empty().append('<option value="">Sélectionner une famille</option>');
+                        $('#edit_id_rayon').empty().append('<option value="">Sélectionner un rayon</option>');
+                        
+                        // Load dependent dropdowns
+                        if (response.id_categorie) {
+                            loadSubcategories('#edit_id_categorie', '#edit_id_subcategorie', selectedSubcategory);
+                        }
+                        
+                        if (response.id_local) {
+                            loadRayons('#edit_id_local', '#edit_id_rayon', selectedRayon);
+                        }
                         
                         // Set stock fields if stock exists
                         if (response.stock) {
@@ -234,19 +238,28 @@ $(document).ready(function () {
         }
     }
     
-    // Load Subcategories Function
+    // Load Subcategories Function - Improved to prevent duplicates
     function loadSubcategories(categorySelector, subcategorySelector, selectedValue = null) {
         var categoryId = $(categorySelector).val();
         var subcategorySelect = $(subcategorySelector);
         
-        // Reset subcategory dropdown
-        subcategorySelect.empty().append('<option value="">Sélectionner une famille</option>');
+        // Check if we're in the edit modal and already loaded subcategories
+        if (categorySelector === '#edit_id_categorie' && subcategoriesLoaded) {
+            console.log('Subcategories already loaded, skipping...');
+            return;
+        }
+        
+        // Reset subcategory dropdown (ensure it's completely emptied)
+        subcategorySelect.empty();
+        subcategorySelect.append('<option value="">Sélectionner une famille</option>');
         
         if (!categoryId) {
             console.warn('Aucune catégorie sélectionnée');
             return;
         }
 
+        console.log('Loading subcategories for category:', categoryId);
+        
         $.ajax({
             url: getSubcategories_url + "/" + categoryId,
             type: 'GET',
@@ -265,6 +278,11 @@ $(document).ready(function () {
                     if (selectedValue) {
                         subcategorySelect.val(selectedValue);
                     }
+                    
+                    // Mark as loaded if in edit modal
+                    if (categorySelector === '#edit_id_categorie') {
+                        subcategoriesLoaded = true;
+                    }
                 } else {
                     console.warn('Aucune sous-catégorie trouvée');
                     new AWN().warning("Aucune famille trouvée pour cette catégorie", { durations: { warning: 5000 } });
@@ -277,19 +295,28 @@ $(document).ready(function () {
         });
     }
     
-    // Load Rayons Function
+    // Load Rayons Function - Improved to prevent duplicates
     function loadRayons(localSelector, rayonSelector, selectedValue = null) {
         var localId = $(localSelector).val();
         var rayonSelect = $(rayonSelector);
         
-        // Reset rayon dropdown
-        rayonSelect.empty().append('<option value="">Sélectionner un rayon</option>');
+        // Check if we're in the edit modal and already loaded rayons
+        if (localSelector === '#edit_id_local' && rayonsLoaded) {
+            console.log('Rayons already loaded, skipping...');
+            return;
+        }
+        
+        // Reset rayon dropdown (ensure it's completely emptied)
+        rayonSelect.empty();
+        rayonSelect.append('<option value="">Sélectionner un rayon</option>');
         
         if (!localId) {
             console.warn('Aucun local sélectionné');
             return;
         }
 
+        console.log('Loading rayons for local:', localId);
+        
         $.ajax({
             url: getRayons_url + "/" + localId,
             type: 'GET',
@@ -308,6 +335,11 @@ $(document).ready(function () {
                     if (selectedValue) {
                         rayonSelect.val(selectedValue);
                     }
+                    
+                    // Mark as loaded if in edit modal
+                    if (localSelector === '#edit_id_local') {
+                        rayonsLoaded = true;
+                    }
                 } else {
                     console.warn('Aucun rayon trouvé');
                     new AWN().warning("Aucun rayon trouvé pour ce local", { durations: { warning: 5000 } });
@@ -323,27 +355,25 @@ $(document).ready(function () {
     // Initialize Dropdowns
     function initializeDropdowns() {
         // Category change - load subcategories
-        $('#id_categorie, #edit_id_categorie').on('change', function() {
-            var targetCategory = $(this).attr('id') === 'id_categorie' 
-                ? '#id_subcategorie' 
-                : '#edit_id_subcategorie';
-            
-            loadSubcategories(
-                '#' + $(this).attr('id'), 
-                targetCategory
-            );
+        $('#id_categorie').on('change', function() {
+            loadSubcategories('#id_categorie', '#id_subcategorie');
+        });
+        
+        $('#edit_id_categorie').on('change', function() {
+            // Reset the loaded flag when category changes
+            subcategoriesLoaded = false;
+            loadSubcategories('#edit_id_categorie', '#edit_id_subcategorie');
         });
         
         // Local change - load rayons
-        $('#id_local, #edit_id_local').on('change', function() {
-            var targetLocal = $(this).attr('id') === 'id_local' 
-                ? '#id_rayon' 
-                : '#edit_id_rayon';
-            
-            loadRayons(
-                '#' + $(this).attr('id'), 
-                targetLocal
-            );
+        $('#id_local').on('change', function() {
+            loadRayons('#id_local', '#id_rayon');
+        });
+        
+        $('#edit_id_local').on('change', function() {
+            // Reset the loaded flag when local changes
+            rayonsLoaded = false;
+            loadRayons('#edit_id_local', '#edit_id_rayon');
         });
     }
     
@@ -468,17 +498,11 @@ $(document).ready(function () {
         });
     });
 
-    // Listen for edit modal shown event to ensure elements are visible
-    $('#ModalEditProduct').on('shown.bs.modal', function () {
-        console.log("Edit modal is now visible");
-        // Reselect form elements now that they're visible
-        if ($('#edit_id_categorie').val()) {
-            loadSubcategories('#edit_id_categorie', '#edit_id_subcategorie');
-        }
-        
-        if ($('#edit_id_local').val()) {
-            loadRayons('#edit_id_local', '#edit_id_rayon');
-        }
+    // Reset modal state when closing
+    $('#ModalEditProduct').on('hidden.bs.modal', function () {
+        // Reset the loaded flags when modal is closed
+        subcategoriesLoaded = false;
+        rayonsLoaded = false;
     });
     
     // Initial dropdown population on page load
@@ -491,15 +515,6 @@ $(document).ready(function () {
         // Populate rayons if local is pre-selected
         if ($('#id_local').val()) {
             loadRayons('#id_local', '#id_rayon');
-        }
-
-        // Same for edit form
-        if ($('#edit_id_categorie').val()) {
-            loadSubcategories('#edit_id_categorie', '#edit_id_subcategorie');
-        }
-        
-        if ($('#edit_id_local').val()) {
-            loadRayons('#edit_id_local', '#edit_id_rayon');
         }
     });
 });

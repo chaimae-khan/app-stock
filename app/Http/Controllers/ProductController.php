@@ -232,49 +232,90 @@ class ProductController extends Controller
                 ], 400);
             }
             
-            // Get category and subcategory names for code generation
-            $category = Category::find($request->id_categorie);
+            // Check if a product with the same name, category and subcategory already exists
+            $existingProduct = Product::where('name', $request->name)
+                ->where('id_categorie', $request->id_categorie)
+                ->where('id_subcategorie', $request->id_subcategorie)
+                ->first();
             
-            // Generate code_article
-            $code_article = Product::generateCodeArticle(
-                $category->name, 
-                $subcategory->name
-            );
-            
-            // Create product
-            $product = Product::create([
-                'name' => $request->name,
-                'code_article' => $code_article,
-                'unite' => null, // We'll use the id_unite in stock table now
-                'price_achat' => $request->price_achat,
-                'price_vente' => $request->price_vente,
-                'code_barre' => $request->code_barre,
-                'id_categorie' => $request->id_categorie,
-                'id_subcategorie' => $request->id_subcategorie,
-                'id_local' => $request->id_local,
-                'id_rayon' => $request->id_rayon,
-                'id_user' => Auth::id(),
-            ]);
-            
-            // Update emplacement after creating product
-            $product->emplacement = $product->generateEmplacement();
-            $product->save();
-            
-            // Create stock entry
-            Stock::create([
-                'id_product' => $product->id,
-                'id_tva' => $request->id_tva,
-                'id_unite' => $request->id_unite,
-                'quantite' => $request->quantite,
-                'seuil' => $request->seuil,
-            ]);
-            
-            DB::commit();
-            
-            return response()->json([
-                'status' => 200,
-                'message' => 'Produit créé avec succès',
-            ]);
+            if ($existingProduct) {
+                // Product already exists, update its stock
+                $stockExists = Stock::where('id_product', $existingProduct->id)->count();
+                
+                if ($stockExists > 0) {
+                    // Update existing stock quantity
+                    DB::table('stock')
+                        ->where('id_product', $existingProduct->id)
+                        ->update([
+                            'quantite' => DB::raw('quantite + ' . $request->quantite),
+                            'id_tva' => $request->id_tva,
+                            'id_unite' => $request->id_unite,
+                            'seuil' => $request->seuil,
+                        ]);
+                } else {
+                    // Create new stock entry for existing product
+                    Stock::create([
+                        'id_product' => $existingProduct->id,
+                        'id_tva' => $request->id_tva,
+                        'id_unite' => $request->id_unite,
+                        'quantite' => $request->quantite,
+                        'seuil' => $request->seuil,
+                    ]);
+                }
+                
+                DB::commit();
+                
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Quantité du produit mise à jour avec succès',
+                ]);
+            } else {
+                // Product doesn't exist, create a new one
+                
+                // Get category and subcategory names for code generation
+                $category = Category::find($request->id_categorie);
+                
+                // Generate code_article
+                $code_article = Product::generateCodeArticle(
+                    $category->name, 
+                    $subcategory->name
+                );
+                
+                // Create product
+                $product = Product::create([
+                    'name' => $request->name,
+                    'code_article' => $code_article,
+                    'unite' => null, // We'll use the id_unite in stock table now
+                    'price_achat' => $request->price_achat,
+                    'price_vente' => $request->price_vente,
+                    'code_barre' => $request->code_barre,
+                    'id_categorie' => $request->id_categorie,
+                    'id_subcategorie' => $request->id_subcategorie,
+                    'id_local' => $request->id_local,
+                    'id_rayon' => $request->id_rayon,
+                    'id_user' => Auth::id(),
+                ]);
+                
+                // Update emplacement after creating product
+                $product->emplacement = $product->generateEmplacement();
+                $product->save();
+                
+                // Create stock entry for new product
+                Stock::create([
+                    'id_product' => $product->id,
+                    'id_tva' => $request->id_tva,
+                    'id_unite' => $request->id_unite,
+                    'quantite' => $request->quantite,
+                    'seuil' => $request->seuil,
+                ]);
+                
+                DB::commit();
+                
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Produit créé avec succès',
+                ]);
+            }
             
         } catch (\Exception $e) {
             DB::rollBack();
@@ -296,6 +337,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         try {
+            // Only load the necessary data for editing
             $product = Product::with(['stock', 'category', 'subcategory', 'local', 'rayon'])->find($id);
             
             if (!$product) {
@@ -321,6 +363,7 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Simplified version that focuses on essential updates
      */
     public function update(Request $request)
     {
@@ -338,10 +381,6 @@ class ProductController extends Controller
             'quantite' => 'required|numeric',
             'seuil' => 'required|numeric',
             'id_tva' => 'required|exists:tvas,id',
-        ], [
-            'required' => 'Le champ :attribute est requis.',
-            'numeric' => 'Le champ :attribute doit être un nombre.',
-            'exists' => 'La valeur sélectionnée pour :attribute est invalide.',
         ]);
         
         if ($validator->fails()) {
@@ -363,25 +402,7 @@ class ProductController extends Controller
                 ], 404);
             }
             
-            // Verify the relationship between category and subcategory
-            $subcategory = SubCategory::find($request->id_subcategorie);
-            if ($subcategory->id_categorie != $request->id_categorie) {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'La famille sélectionnée n\'appartient pas à cette catégorie',
-                ], 400);
-            }
-            
-            // Verify the relationship between local and rayon
-            $rayon = Rayon::find($request->id_rayon);
-            if ($rayon->id_local != $request->id_local) {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'Le rayon sélectionné n\'appartient pas à ce local',
-                ], 400);
-            }
-            
-            // Update product
+            // Update basic product info
             $product->update([
                 'name' => $request->name,
                 'price_achat' => $request->price_achat,
@@ -393,11 +414,11 @@ class ProductController extends Controller
                 'id_rayon' => $request->id_rayon,
             ]);
             
-            // Update emplacement after updating product
+            // Update emplacement
             $product->emplacement = $product->generateEmplacement();
             $product->save();
             
-            // Update or create stock
+            // Update stock
             $stock = Stock::where('id_product', $product->id)->first();
             
             if ($stock) {
@@ -433,7 +454,8 @@ class ProductController extends Controller
             ]);
             
             return response()->json([
-                'status' => 500,'message' => 'Une erreur est survenue: ' . $e->getMessage(),
+                'status' => 500,
+                'message' => 'Une erreur est survenue: ' . $e->getMessage(),
             ], 500);
         }
     }
