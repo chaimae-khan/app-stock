@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('tvas', function (Blueprint $table) {
+        Schema::create('unite', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('value', 5, 2);
             $table->foreignId('iduser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('tvas');
+        Schema::dropIfExists('unite');
     }
 };

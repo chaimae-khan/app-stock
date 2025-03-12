@@ -16,15 +16,15 @@ $(document).ready(function () {
 
     function initializeDataTable() {
         try {
-            if ($.fn.DataTable.isDataTable('.TableCategories')) {
-                $('.TableCategories').DataTable().destroy();
+            if ($.fn.DataTable.isDataTable('.TableUnites')) {
+                $('.TableUnites').DataTable().destroy();
             }
             
-            var tableCategories = $('.TableCategories').DataTable({
+            var tableUnites = $('.TableUnites').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: categories,
+                    url: unites,
                     dataSrc: function (json) {
                         if (json.data.length === 0) {
                             $('.paging_full_numbers').css('display', 'none');
@@ -61,45 +61,45 @@ $(document).ready(function () {
             });
             
             // Handle edit button click
-            $('.TableCategories tbody').on('click', '.editCategory', function(e) {
+            $('.TableUnites tbody').on('click', '.editUnite', function(e) {
                 e.preventDefault();
-                var IdCategory = $(this).attr('data-id');
+                var IdUnite = $(this).attr('data-id');
                 
                 $.ajax({
                     type: "GET",
-                    url: editCategory + "/" + IdCategory,
+                    url: editUnite + "/" + IdUnite,
                     dataType: "json",
                     success: function(response) {
-                        $('#ModalEditCategory').modal("show");
+                        $('#ModalEditUnite').modal("show");
                         $('#name').val(response.name);
-                        $('#BtnUpdateCategory').attr('data-value', IdCategory);
+                        $('#BtnUpdateUnite').attr('data-value', IdUnite);
                     },
                     error: function(xhr, status, error) {
-                        console.error("Error fetching category:", error);
+                        console.error("Error fetching unite:", error);
                         new AWN().alert("Une erreur est survenue, veuillez réessayer.", { durations: { alert: 5000 } });
                     }
                 });
             });
 
             // Handle delete button click
-            $('.TableCategories tbody').on('click', '.deleteCategory', function(e) {
+            $('.TableUnites tbody').on('click', '.deleteUnite', function(e) {
                 e.preventDefault();
-                var IdCategory = $(this).attr('data-id');
+                var IdUnite = $(this).attr('data-id');
                 let notifier = new AWN();
 
                 let onOk = () => {
                     $.ajax({
                         type: "post",
-                        url: DeleteCategory,
+                        url: DeleteUnite,
                         data: {
-                            id: IdCategory,
+                            id: IdUnite,
                             _token: csrf_token,
                         },
                         dataType: "json",
                         success: function (response) {
                             if(response.status == 200) {
                                 new AWN().success(response.message, {durations: {success: 5000}});
-                                $('.TableCategories').DataTable().ajax.reload();
+                                $('.TableUnites').DataTable().ajax.reload();
                             } else if(response.status == 404) {
                                 new AWN().warning(response.message, {durations: {warning: 5000}});
                             }
@@ -115,7 +115,7 @@ $(document).ready(function () {
                 };
 
                 notifier.confirm(
-                    'Êtes-vous sûr de vouloir supprimer cette catégorie ?',
+                    'Êtes-vous sûr de vouloir supprimer cette unité ?',
                     onOk,
                     onCancel,
                     {
@@ -131,44 +131,44 @@ $(document).ready(function () {
         }
     }
     
-    // Add Category
-    $('#BtnAddCategory').on('click', function(e) {
+    // Add Unite
+    $('#BtnAddUnite').on('click', function(e) {
         e.preventDefault();
         
-        let formData = new FormData($('#FormAddCategory')[0]);
+        let formData = new FormData($('#FormAddUnite')[0]);
         formData.append('_token', csrf_token);
 
-        $('#BtnAddCategory').prop('disabled', true).text('Enregistrement...');
+        $('#BtnAddUnite').prop('disabled', true).text('Enregistrement...');
 
         $.ajax({
             type: "POST",
-            url: AddCategory,
+            url: AddUnite,
             data: formData,
             processData: false,
             contentType: false,
             dataType: "json",
             success: function (response) {
-                $('#BtnAddCategory').prop('disabled', false).text('Sauvegarder');
+                $('#BtnAddUnite').prop('disabled', false).text('Sauvegarder');
                 
                 if(response.status == 200) {
                     new AWN().success(response.message, {durations: {success: 5000}});
-                    $('#ModalAddCategory').modal('hide');
-                    $('.TableCategories').DataTable().ajax.reload();
-                    $('#FormAddCategory')[0].reset();
+                    $('#ModalAddUnite').modal('hide');
+                    $('.TableUnites').DataTable().ajax.reload();
+                    $('#FormAddUnite')[0].reset();
                 } else if(response.status == 409) {
                     // Handle already exists case
                     new AWN().warning(response.message, {durations: {warning: 5000}});
                 } else if(response.status == 404) {
                     new AWN().warning(response.message, {durations: {warning: 5000}});
                 } else if(response.status == 400) {
-                    $('.validationAddCategory').html("");
-                    $('.validationAddCategory').addClass('alert alert-danger');
+                    $('.validationAddUnite').html("");
+                    $('.validationAddUnite').addClass('alert alert-danger');
                     $.each(response.errors, function(key, list_err) {
-                        $('.validationAddCategory').append('<li>' + list_err + '</li>');
+                        $('.validationAddUnite').append('<li>' + list_err + '</li>');
                     });
                     
                     setTimeout(() => {
-                        $('.validationAddCategory').fadeOut('slow', function() {
+                        $('.validationAddUnite').fadeOut('slow', function() {
                             $(this).html("").removeClass('alert alert-danger').show();
                         });
                     }, 5000);
@@ -177,7 +177,7 @@ $(document).ready(function () {
                 }
             },
             error: function(xhr) {
-                $('#BtnAddCategory').prop('disabled', false).text('Sauvegarder');
+                $('#BtnAddUnite').prop('disabled', false).text('Sauvegarder');
                 
                 // Try to parse the error response
                 try {
@@ -194,47 +194,47 @@ $(document).ready(function () {
         });
     });
 
-    // Update Category
-    $('#BtnUpdateCategory').on('click', function(e) {
+    // Update Unite
+    $('#BtnUpdateUnite').on('click', function(e) {
         e.preventDefault();
         
-        var IdCategory = $(this).attr('data-value');
+        var IdUnite = $(this).attr('data-value');
         
         let formData = new FormData();
         formData.append('_token', csrf_token);
-        formData.append('id', IdCategory);
+        formData.append('id', IdUnite);
         formData.append('name', $('#name').val());
         
-        $('#BtnUpdateCategory').prop('disabled', true).text('Mise à jour...');
+        $('#BtnUpdateUnite').prop('disabled', true).text('Mise à jour...');
         
         $.ajax({
             type: "POST",
-            url: UpdateCategory,
+            url: UpdateUnite,
             data: formData,
             processData: false,
             contentType: false,
             dataType: "json",
             success: function(response) {
-                $('#BtnUpdateCategory').prop('disabled', false).text('Mettre à jour');
+                $('#BtnUpdateUnite').prop('disabled', false).text('Mettre à jour');
                 
                 if (response.status == 200) {
                     new AWN().success(response.message, {durations: {success: 5000}});
-                    $('#ModalEditCategory').modal('hide');
-                    $('.TableCategories').DataTable().ajax.reload();
+                    $('#ModalEditUnite').modal('hide');
+                    $('.TableUnites').DataTable().ajax.reload();
                 } else if (response.status == 409) {
                     // Handle already exists case
                     new AWN().warning(response.message, {durations: {warning: 5000}});
                 } else if (response.status == 404) {
                     new AWN().warning(response.message, {durations: {warning: 5000}});
                 } else if (response.status == 400) {
-                    $('.validationEditCategory').html("");
-                    $('.validationEditCategory').addClass('alert alert-danger');
+                    $('.validationEditUnite').html("");
+                    $('.validationEditUnite').addClass('alert alert-danger');
                     $.each(response.errors, function(key, list_err) {
-                        $('.validationEditCategory').append('<li>' + list_err + '</li>');
+                        $('.validationEditUnite').append('<li>' + list_err + '</li>');
                     });
                     
                     setTimeout(() => {
-                        $('.validationEditCategory').fadeOut('slow', function() {
+                        $('.validationEditUnite').fadeOut('slow', function() {
                             $(this).html("").removeClass('alert alert-danger').show();
                         });
                     }, 5000);
@@ -243,7 +243,7 @@ $(document).ready(function () {
                 }
             },
             error: function(xhr) {
-                $('#BtnUpdateCategory').prop('disabled', false).text('Mettre à jour');
+                $('#BtnUpdateUnite').prop('disabled', false).text('Mettre à jour');
                 
                 // Try to parse the error response
                 try {

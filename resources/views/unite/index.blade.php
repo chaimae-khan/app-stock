@@ -14,14 +14,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/awesome-notifications@3.1.3/dist/style.min.css">
 
 <!-- Custom JS -->
-<script src="{{asset('assets/js/Categories/script.js')}}"></script>
+<script src="{{asset('assets/js/unite/script.js')}}"></script>
 <script>
-    var csrf_token          = "{{csrf_token()}}";
-    var AddCategory         = "{{url('addCategory')}}";
-    var categories          = "{{url('categories')}}";
-    var UpdateCategory      = "{{url('updateCategory')}}";
-    var DeleteCategory      = "{{url('DeleteCategory')}}";
-    var editCategory        = "{{url('editCategory')}}";
+    var csrf_token        = "{{csrf_token()}}";
+    var AddUnite          = "{{url('addUnite')}}";
+    var unites            = "{{url('unite')}}";
+    var UpdateUnite       = "{{url('updateUnite')}}";
+    var DeleteUnite       = "{{url('deleteUnite')}}";
+    var editUnite         = "{{url('editUnite')}}";
 </script>
 <div class="content-page">
     <div class="content">
@@ -31,13 +31,13 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Liste des catégories</h4>
+                    <h4 class="fs-18 fw-semibold m-0">Liste des unités</h4>
                 </div>
                 
                 <div class="text-end">
                     <ol class="breadcrumb m-0 py-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
-                        <li class="breadcrumb-item active">Catégories</li>
+                        <li class="breadcrumb-item active">Unités</li>
                     </ol>
                 </div>
             </div>
@@ -48,15 +48,15 @@
 
                         <div class="card-body">
                             <div class="mb-3">
-                                <button class="btn btn-primary" style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#ModalAddCategory">
-                                    <i class="fa-solid fa-plus"></i> Ajouter une catégorie
+                                <button class="btn btn-primary" style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#ModalAddUnite">
+                                    <i class="fa-solid fa-plus"></i> Ajouter une unité
                                 </button>
                             </div>
                             
-                            <!-- Category list -->
+                            <!-- Unite list -->
                             <div class="table-responsive">
                                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer table-responsive">
-                                    <table class="table datatable dataTable no-footer TableCategories" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                                    <table class="table datatable dataTable no-footer TableUnites" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">Nom</th>
@@ -77,23 +77,23 @@
             </div>
         </div>
 
-        <!-- Add Category Modal -->
-        <div class="modal fade" id="ModalAddCategory" tabindex="-1" aria-labelledby="ModalAddCategoryLabel" aria-hidden="true">
+        <!-- Add Unite Modal -->
+        <div class="modal fade" id="ModalAddUnite" tabindex="-1" aria-labelledby="ModalAddUniteLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalAddCategoryLabel">Ajouter une nouvelle catégorie</h5>
+                        <h5 class="modal-title" id="ModalAddUniteLabel">Ajouter une nouvelle unité</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <ul class="validationAddCategory"></ul>
-                            <form action="{{ url('addCategory') }}" id="FormAddCategory">
+                            <ul class="validationAddUnite"></ul>
+                            <form action="{{ url('addUnite') }}" id="FormAddUnite">
                                 <!-- Name -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Nom de la catégorie</label>
+                                            <label>Nom de l'unité</label>
                                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -106,29 +106,29 @@
                     </div>
                     <div class="modal-footer text-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" id="BtnAddCategory">Sauvegarder</button>
+                        <button type="button" class="btn btn-primary" id="BtnAddUnite">Sauvegarder</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Category Modal -->
-        <div class="modal fade" id="ModalEditCategory" tabindex="-1" aria-labelledby="ModalEditCategoryLabel" aria-hidden="true">
+        <!-- Edit Unite Modal -->
+        <div class="modal fade" id="ModalEditUnite" tabindex="-1" aria-labelledby="ModalEditUniteLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalEditCategoryLabel">Modifier la catégorie</h5>
+                        <h5 class="modal-title" id="ModalEditUniteLabel">Modifier l'unité</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <ul class="validationEditCategory"></ul>
-                            <form action="{{ url('updateCategory') }}" id="FormUpdateCategory">
+                            <ul class="validationEditUnite"></ul>
+                            <form action="{{ url('updateUnite') }}" id="FormUpdateUnite">
                                 <!-- Name -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Nom de la catégorie</label>
+                                            <label>Nom de l'unité</label>
                                             <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -141,7 +141,7 @@
                     </div>
                     <div class="modal-footer text-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" id="BtnUpdateCategory">Mettre à jour</button>
+                        <button type="button" class="btn btn-primary" id="BtnUpdateUnite">Mettre à jour</button>
                     </div>
                 </div>
             </div>

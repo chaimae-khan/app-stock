@@ -20,10 +20,14 @@ return new class extends Migration
                 ->nullable() // Add this since you're using onDelete('set null')
                 ->constrained('tvas')
                 ->onDelete('set null');
+            $table->foreignId('id_unite')
+                ->nullable()
+                ->constrained('unite')
+                ->onDelete('set null');
             $table->unsignedInteger('quantite')->default(0);
-            $table->integer('seuil')->default(10);
-            $table->date('date_entree')->nullable();
-            $table->date('date_sortie')->nullable();
+            $table->integer('seuil')->default(0);
+            // $table->date('date_entree')->nullable();
+            // $table->date('date_sortie')->nullable();
             $table->timestamps();
         });
     }

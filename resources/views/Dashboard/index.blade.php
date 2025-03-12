@@ -340,7 +340,14 @@
                             </li>
 
                             
+                            <li class="menu-title">products</li>
 
+<li>
+    <a class='tp-link' href="{{url('products')}}" >
+        <i class="fa-solid fa-percent"></i>
+        <span> products </span>
+    </a>
+</li>
                             
 
                             <li class="menu-title mt-2">Categories</li>
@@ -369,12 +376,18 @@
                             <li class="menu-title mt-2">Sub Categories</li>
                 
                             <li>
-                                <a class='tp-link' href='{{url('categories')}}'>
+                                <a class='tp-link' href='{{url('subcategory')}}'>
                                     <i class="fa-solid fa-list-check"></i>
                                     <span> familie </span>
                                 </a>
                             </li>
-
+                            
+                            <li>
+                                <a class='tp-link' href='{{url('unite')}}'>
+                                    <i class="fa-solid fa-list-check"></i>
+                                    <span> unite </span>
+                                </a>
+                            </li>
                             
 
                             <li class="menu-title mt-2">Marchandises</li>

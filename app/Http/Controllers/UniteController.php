@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Unite;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CategoriesController extends Controller
+class UniteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,30 +19,30 @@ class CategoriesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $dataCategory = DB::table('categories as c')
-                                ->join('users as u','u.id','c.iduser')
+            $dataUnite = DB::table('unite as u')
+                ->join('users as us', 'us.id', 'u.iduser')
                 ->select(
-                    'c.id',
-                    'c.name',
-                    'u.name as username',
-                    'c.created_at'
+                    'u.id',
+                    'u.name',
+                    'us.name as username',
+                    'u.created_at'
                 );
 
-            return DataTables::of($dataCategory)
+            return DataTables::of($dataUnite)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
 
                     // Edit button
-                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-primary-subtle me-1 editUnite"
                                 data-id="' . $row->id . '">
                                 <i class="fa-solid fa-pen-to-square text-primary"></i>
                             </a>';
 
                     // Delete button
-                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteCategory"
+                    $btn .= '<a href="#" class="btn btn-sm bg-danger-subtle deleteUnite"
                                 data-id="' . $row->id . '" data-bs-toggle="tooltip" 
-                                title="Supprimer Catégorie">
+                                title="Supprimer Unité">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>';
 
@@ -51,8 +51,10 @@ class CategoriesController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-             
-        return view('categories.index');
+        
+        return view('unite.index', [
+            'unites' => Unite::latest('id')->paginate(10)
+        ]);
     }
 
     /**
@@ -75,25 +77,25 @@ class CategoriesController extends Controller
             ], 400);
         }
 
-        // Check if category already exists with the same name
-        $exists = Category::where('name', $request->name)->exists();
+        // Check if unite already exists with the same name
+        $exists = Unite::where('name', $request->name)->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette catégorie existe déjà',
+                'message' => 'Cette unité existe déjà',
             ], 409);
         }
 
-        $category = Category::create([
+        $unite = Unite::create([
             'name' => $request->name,
             'iduser' => Auth::user()->id,
         ]);
 
-        if($category) {
+        if($unite) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Catégorie créée avec succès',
+                'message' => 'Unité créée avec succès',
             ]);
         } else { 
             return response()->json([
@@ -108,16 +110,16 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
+        $unite = Unite::find($id);
         
-        if (!$category) {
+        if (!$unite) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Catégorie non trouvée'
+                'message' => 'Unité non trouvée'
             ], 404);
         }
         
-        return response()->json($category);
+        return response()->json($unite);
     }
 
     /**
@@ -125,12 +127,12 @@ class CategoriesController extends Controller
      */
     public function update(Request $request)
     {
-        $category = Category::find($request->id);
+        $unite = Unite::find($request->id);
         
-        if (!$category) {
+        if (!$unite) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Catégorie non trouvée'
+                'message' => 'Unité non trouvée'
             ], 404);
         }
         
@@ -149,30 +151,30 @@ class CategoriesController extends Controller
             ], 400);
         }
         
-        // Check if another category with the same name exists
-        $exists = Category::where('name', $request->name)
-            ->where('id', '!=', $request->id) // Exclude current record
+        // Check if another unite with the same name exists
+        $exists = Unite::where('name', $request->name)
+            ->where('id', '!=', $request->id)
             ->exists();
             
         if ($exists) {
             return response()->json([
                 'status' => 409, // Conflict status code
-                'message' => 'Cette catégorie existe déjà',
+                'message' => 'Cette unité existe déjà',
             ], 409);
         }
 
-        $category->name = $request->name;
-        $saved = $category->save();
+        $unite->name = $request->name;
+        $saved = $unite->save();
         
         if ($saved) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Catégorie mise à jour avec succès',
+                'message' => 'Unité mise à jour avec succès',
             ]);
         } else {
             return response()->json([
                 'status' => 500,
-                'message' => 'Erreur lors de la mise à jour de la catégorie',
+                'message' => 'Erreur lors de la mise à jour de l\'unité',
             ], 500);
         }
     }
@@ -182,19 +184,19 @@ class CategoriesController extends Controller
      */
     public function destroy(Request $request)
     {
-        $category = Category::find($request->id);
+        $unite = Unite::find($request->id);
 
-        if (!$category) {
+        if (!$unite) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Catégorie non trouvée'
+                'message' => 'Unité non trouvée'
             ], 404);
         }
 
-        if ($category->delete()) {
+        if ($unite->delete()) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Catégorie supprimée avec succès'
+                'message' => 'Unité supprimée avec succès'
             ]);
         }
 
