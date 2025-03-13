@@ -1,6 +1,8 @@
 {
     "version": 2,
     "framework": null,
+    "buildCommand": "php -d memory_limit=512M $(which composer) install --no-dev",
+    "outputDirectory": "public",
     "functions": {
       "api/index.php": {
         "runtime": "vercel-php@0.6.0"
